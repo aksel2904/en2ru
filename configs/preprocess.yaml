@@ -1,0 +1,16 @@
+defaults:
+  - override hydra/job_logging: disabled
+
+data:
+  raw_en: data/data1/dataset1_small.en
+  raw_ru: data/data1/dataset1_small.ru
+  out_dir: data/data1/split_small
+
+bpe:
+  vocab_size_en: 10000
+  vocab_size_ru: 13500
+
+split:
+  test_size: 0.1
+  val_size: 0.05
+  seed: 42
