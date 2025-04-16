@@ -1,0 +1,6 @@
+torch
+pytorch-lightning
+hydra-core
+omegaconf
+dvc[gdrive]
+clearml
