@@ -1,0 +1,20 @@
+dataset1_small_en: data/data1/dataset1_small.en
+dataset1_small_ru: data/data1/dataset1_small.ru
+dataset1_medium_en: data/data1/dataset1_medium.en
+dataset1_medium_ru: data/data1/dataset1_medium.ru
+dataset1_en: data/data1/dataset1.en
+dataset1_ru: data/data1/dataset1.ru
+
+dataset2_small_en: data/data2/dataset2_small.en
+dataset2_small_ru: data/data2/dataset2_small.ru
+dataset2_medium_en: data/data2/dataset2_medium.en
+dataset2_medium_ru: data/data2/dataset2_medium.ru
+dataset2_en: data/data2/dataset2.en
+dataset2_ru: data/data2/dataset2.ru
+
+dataset3_small_en: data/data3/dataset3_small.en
+dataset3_small_ru: data/data3/dataset3_small.ru
+dataset3_medium_en: data/data3/dataset3_medium.en
+dataset3_medium_ru: data/data3/dataset3_medium.ru
+dataset3_en: data/data3/dataset3.en
+dataset3_ru: data/data3/dataset3.ru
