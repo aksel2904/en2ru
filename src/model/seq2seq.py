@@ -16,7 +16,7 @@ class Seq2Seq(nn.Module):
         super().__init__()
         self.encoder = encoder
         self.decoder = decoder
-        self.device = "cude" # temporary. was: = device
+        self.device = "cuda" # temporary. was: = device
 
     def forward(self, src, trg, teacher_forcing_ratio=1.0):
         """

@@ -24,6 +24,8 @@ def main(cfg: DictConfig):
         train_tgt=cfg.data.train_tgt,
         val_src=cfg.data.val_src,
         val_tgt=cfg.data.val_tgt,
+        test_src=cfg.data.test_src,
+        test_tgt=cfg.data.test_tgt,
         sp_model_src=cfg.data.sp_model_src,
         sp_model_tgt=cfg.data.sp_model_tgt,
         batch_size=cfg.data.batch_size,
