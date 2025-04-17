@@ -19,6 +19,8 @@ class Seq2SeqLightningModule(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         src, trg = batch  # [src_len, batch], [trg_len, batch]
+        src = src.to(self.device)
+        trg = trg.to(self.device)
         output = self(src, trg)
 
         output_dim = output.shape[-1]
@@ -31,6 +33,8 @@ class Seq2SeqLightningModule(pl.LightningModule):
 
     def validation_step(self, batch, batch_idx):
         src, trg = batch
+        src = src.to(self.device)
+        trg = trg.to(self.device)
         output = self(src, trg, teacher_forcing_ratio=0.0)
 
         output_dim = output.shape[-1]
