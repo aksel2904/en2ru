@@ -1,3 +1,4 @@
+import torch
 import hydra
 from omegaconf import DictConfig
 import pytorch_lightning as pl
@@ -9,10 +10,10 @@ from model.decoder import Decoder
 from model.lightning_module import Seq2SeqLightningModule
 
 
-@hydra.main(config_path="../configs", config_name="train")
+@hydra.main(config_path="../configs", config_name="train", version_base="1.1")
 def main(cfg: DictConfig):
     print("🚀 Запуск обучения с конфигом:")
-    print(cfg.pretty())
+    print(OmegaConf.to_yaml(cfg))
 
     # DataModule
     data = TranslationDataModule(
