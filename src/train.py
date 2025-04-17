@@ -66,7 +66,7 @@ def main(cfg: DictConfig):
 
     # Trainer
     trainer = pl.Trainer(
-        max_epochs=cfg.train.epochs,
+        max_epochs=cfg.epochs,
         accelerator="gpu" if torch.cuda.is_available() else "cpu",
         default_root_dir="weights/",  # можно будет пушить через DVC
         log_every_n_steps=20

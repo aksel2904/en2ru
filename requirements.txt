@@ -4,3 +4,4 @@ hydra-core
 omegaconf
 dvc[gdrive]
 clearml
+sacrebleu

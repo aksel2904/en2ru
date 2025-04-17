@@ -36,6 +36,8 @@ class TranslationDataModule(pl.LightningDataModule):
         train_tgt,
         val_src,
         val_tgt,
+        test_src,
+        test_tgt,
         sp_model_src,
         sp_model_tgt,
         batch_size=32,
@@ -46,6 +48,8 @@ class TranslationDataModule(pl.LightningDataModule):
         self.train_tgt = train_tgt
         self.val_src = val_src
         self.val_tgt = val_tgt
+        self.test_src = test_src
+        self.test_tgt = test_tgt
         self.sp_model_src = sp_model_src
         self.sp_model_tgt = sp_model_tgt
         self.batch_size = batch_size
@@ -65,6 +69,9 @@ class TranslationDataModule(pl.LightningDataModule):
         )
         self.val_data = TranslationDataset(
             self.val_src, self.val_tgt, self.sp_src, self.sp_tgt
+        )
+        self.test_data = TranslationDataset(
+            self.test_src, self.test_tgt, self.sp_src, self.sp_tgt
         )
 
     def collate_fn(self, batch):
@@ -88,6 +95,15 @@ class TranslationDataModule(pl.LightningDataModule):
     def val_dataloader(self):
         return DataLoader(
             self.val_data,
+            batch_size=self.batch_size,
+            shuffle=False,
+            num_workers=self.num_workers,
+            collate_fn=self.collate_fn
+        )
+    
+    def test_dataloader(self):
+        return DataLoader(
+            self.test_data,
             batch_size=self.batch_size,
             shuffle=False,
             num_workers=self.num_workers,

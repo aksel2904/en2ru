@@ -24,6 +24,8 @@ train_src: data/data1/split_small/train.en
 train_tgt: data/data1/split_small/train.ru
 val_src: data/data1/split_small/val.en
 val_tgt: data/data1/split_small/val.ru
+test_src: data/data1/split_small/test.en
+test_tgt: data/data1/split_small/test.ru
 
 sp_model_src: data/data1/split_small/bpe_en.model
 sp_model_tgt: data/data1/split_small/bpe_ru.model
