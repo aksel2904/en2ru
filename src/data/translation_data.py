@@ -39,7 +39,7 @@ class TranslationDataModule(pl.LightningDataModule):
         sp_model_src,
         sp_model_tgt,
         batch_size=32,
-        num_workers=2
+        num_workers=0 #?
     ):
         super().__init__()
         self.train_src = train_src
@@ -69,8 +69,11 @@ class TranslationDataModule(pl.LightningDataModule):
 
     def collate_fn(self, batch):
         src_batch, tgt_batch = zip(*batch)
-        src_batch = pad_sequence(src_batch, batch_first=True, padding_value=self.pad_id_src)
-        tgt_batch = pad_sequence(tgt_batch, batch_first=True, padding_value=self.pad_id_tgt)
+        src_batch = pad_sequence(src_batch, padding_value=self.pad_id_src)
+        tgt_batch = pad_sequence(tgt_batch, padding_value=self.pad_id_tgt)
+        '''
+        batch_first=True?
+        '''
         return src_batch, tgt_batch
 
     def train_dataloader(self):

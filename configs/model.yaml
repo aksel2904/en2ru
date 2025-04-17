@@ -1,0 +1,11 @@
+input_dim: ???          # ← сюда подставится через data_module.input_vocab_size
+output_dim: ???         # ← сюда подставится через data_module.target_vocab_size
+
+enc_emb_dim: 32
+dec_emb_dim: 32
+
+enc_hid_dim: 64
+dec_hid_dim: 64
+attn_dim: 8
+
+learning_rate: 0.001
