@@ -1,1 +1,5 @@
+defaults:
+  - data: data              # → configs/data.yaml
+  - model: model            # → configs/model.yaml
+  - _self_                  # → всё, что ниже — в train
 epochs: 10
