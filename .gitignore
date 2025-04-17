@@ -16,7 +16,7 @@ build/
 *.log
 *.out
 
-*.dvc
+
 .dvc/tmp/
 .dvc/cache/
 .dvc/plots/
