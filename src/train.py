@@ -9,10 +9,12 @@ from model.encoder import Encoder
 from model.attention import Attention
 from model.decoder import Decoder
 from model.lightning_module import Seq2SeqLightningModule
+import os
 
 
 @hydra.main(config_path="../configs", config_name="train", version_base="1.1")
 def main(cfg: DictConfig):
+    os.chdir(hydra.utils.get_original_cwd())
     print("🚀 Запуск обучения с конфигом:")
     print(OmegaConf.to_yaml(cfg))
 

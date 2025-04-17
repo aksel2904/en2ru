@@ -5,8 +5,9 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import sentencepiece as spm
 
-@hydra.main(config_path="../configs", config_name="preprocess")
+@hydra.main(config_path="../configs", config_name="preprocess", version_base=None)
 def main(cfg: DictConfig):
+    os.chdir(hydra.utils.get_original_cwd())
     en_path = cfg.data.raw_en
     ru_path = cfg.data.raw_ru
     out_dir = cfg.data.out_dir
