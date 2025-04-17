@@ -1,6 +1,7 @@
 import torch
 import hydra
 from omegaconf import DictConfig
+from omegaconf import OmegaConf
 import pytorch_lightning as pl
 
 from data.translation_data import TranslationDataModule
