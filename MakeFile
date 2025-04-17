@@ -1,0 +1,36 @@
+# ========= Paths =========
+PYTHON=python
+CONFIG_DIR=configs
+TRAIN_SCRIPT=src/train.py
+INFER_SCRIPT=src/inference.py
+PREPROCESS_SCRIPT=scripts/preprocess.py
+
+# ========= Targets =========
+
+preprocess:
+	@echo "Препроцессинг данных..."
+	$(PYTHON) $(PREPROCESS_SCRIPT)
+
+train:
+	@echo "Обучение модели..."
+	$(PYTHON) $(TRAIN_SCRIPT)
+
+infer:
+	@echo "Инференс модели..."
+	$(PYTHON) $(INFER_SCRIPT)
+
+bleu:
+	@echo "BLEU score:"
+	sacrebleu data/data1/split_small/test.ru -i outputs/predictions.txt --tokenize none --width 2 -b
+
+dvc-push:
+	@echo "DVC push..."
+	dvc add weights/
+	git add weights.dvc
+	git commit -m "Add model weights"
+	dvc push
+
+clean:
+	@echo "Удаляем временные файлы..."
+	rm -rf outputs/predictions.txt weights/ .dvc/tmp
+
