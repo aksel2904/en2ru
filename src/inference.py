@@ -1,3 +1,4 @@
+import os
 import torch
 import re
 import hydra
@@ -49,6 +50,7 @@ def indices_to_text(preds, sp_model):
 
 @hydra.main(config_path="../configs", config_name="train", version_base="1.1")
 def main(cfg: DictConfig):
+    os.chdir(hydra.utils.get_original_cwd())
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Data
@@ -73,7 +75,7 @@ def main(cfg: DictConfig):
     dec = Decoder(output_dim, cfg.model.dec_emb_dim, cfg.model.enc_hid_dim, cfg.model.dec_hid_dim, attn)
 
     model = Seq2SeqLightningModule(enc, dec, sp_tgt=data.sp_tgt, learning_rate=cfg.model.learning_rate)
-    model.load_state_dict(torch.load("weights/last.ckpt")["state_dict"])
+    model.load_state_dict(torch.load("weights/best.ckpt")["state_dict"])
     model.to(device)
 
     # Get predictions

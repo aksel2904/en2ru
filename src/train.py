@@ -1,15 +1,15 @@
 import torch
 import hydra
-from omegaconf import DictConfig
-from omegaconf import OmegaConf
+from omegaconf import DictConfig, OmegaConf
 import pytorch_lightning as pl
+from pytorch_lightning.callbacks import ModelCheckpoint
+import os
 
 from data.translation_data import TranslationDataModule
 from model.encoder import Encoder
 from model.attention import Attention
 from model.decoder import Decoder
 from model.lightning_module import Seq2SeqLightningModule
-import os
 
 
 @hydra.main(config_path="../configs", config_name="train", version_base="1.1")
@@ -66,11 +66,20 @@ def main(cfg: DictConfig):
         learning_rate=cfg.model.learning_rate
     )
 
-    # Trainer
+    checkpoint_callback = ModelCheckpoint(
+        dirpath="weights/",
+        filename="best",
+        save_top_k=1,
+        monitor="val_loss",
+        mode="min",
+        save_weights_only=True
+    )
+
     trainer = pl.Trainer(
         max_epochs=cfg.epochs,
         accelerator="gpu" if torch.cuda.is_available() else "cpu",
-        default_root_dir="weights/",  # можно будет пушить через DVC
+        default_root_dir="weights/",
+        callbacks=[checkpoint_callback],  # вот здесь
         log_every_n_steps=20
     )
 
