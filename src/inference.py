@@ -19,8 +19,8 @@ def evaluate(model, data_loader, device):
     with torch.no_grad():
         for src_batch, _ in data_loader:
             src_batch = src_batch.to(device)
-            predicted_tokens = model.model.inference(src_batch, bos_id=model.pad_id + 1, eos_id=model.pad_id + 2)
-
+            #predicted_tokens = model.model.inference(src_batch, bos_id=model.pad_id + 1, eos_id=model.pad_id + 2)
+            predicted_tokens = model.model.inference_beam_search(src_batch, bos_id=model.pad_id + 1, eos_id=model.pad_id + 2, pad_id=model.pad_id)
             for seq in predicted_tokens:
                 predictions.append(seq)
 
