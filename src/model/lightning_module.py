@@ -13,6 +13,14 @@ class Seq2SeqLightningModule(pl.LightningModule):
         self.pad_id = sp_tgt.pad_id()
 
         self.criterion = nn.CrossEntropyLoss(ignore_index=self.pad_id)
+        
+        self.model.apply(self.init_weights)
+
+    def init_weights(self, m):
+        if isinstance(m, nn.Linear) or isinstance(m, nn.Embedding):
+            nn.init.normal_(m.weight, mean=0, std=0.01)
+        if isinstance(m, nn.Linear) and m.bias is not None:
+            nn.init.constant_(m.bias, 0)
 
     def forward(self, src, trg, teacher_forcing_ratio=1.0):
         return self.model(src, trg, teacher_forcing_ratio)
