@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class Attention(nn.Module):
+'''class Attention(nn.Module):
     """
     Attention: tanh → sum по последнему измерению → softmax
     """
@@ -42,8 +42,8 @@ class Attention(nn.Module):
         attention = energy.sum(dim=2)
 
         return F.softmax(attention, dim=1)
-
-'''class Attention(nn.Module):
+'''
+class Attention(nn.Module):
     """
     Additive (Bahdanau-style) Attention mechanism.
 
@@ -83,4 +83,3 @@ class Attention(nn.Module):
         attention = self.v(energy).squeeze(2)                        # [batch_size, src_len]
 
         return F.softmax(attention, dim=1)                           # normalized weights
-'''

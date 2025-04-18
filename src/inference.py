@@ -82,7 +82,7 @@ def main(cfg: DictConfig):
     predictions = evaluate(model, data.test_dataloader(), device)
     decoded = indices_to_text(predictions, data.sp_tgt)
 
-    print("📝 Примеры перевода:")
+    print("Примеры перевода:")
     for i in range(min(5, len(decoded))):
         print(f"{i+1}. {decoded[i]}")
 
@@ -98,7 +98,7 @@ def main(cfg: DictConfig):
 
     # BLEU вычисляется по токенизированным предложениям
     bleu = sacrebleu.corpus_bleu(decoded, [references], tokenize="none")
-    print(f"\n📊 BLEU score: {bleu.score:.2f}")
+    print(f"\nBLEU score: {bleu.score:.2f}")
 
 
 if __name__ == "__main__":

@@ -13,7 +13,6 @@ build/
 
 .ipynb_checkpoints/
 
-*.log
 *.out
 
 
@@ -26,8 +25,6 @@ build/
 dvc-sa.json
 .secrets/
 
-weights/
-outputs/
 
 .env
 .venv/
@@ -38,6 +35,17 @@ pip-log.txt
 
 .vscode/
 .colab/
+
+*.log
+lightning_logs/
+
+
+weights/
+!weights/*.dvc
+
+outputs/
+!outputs/*.dvc
+
 
 .DS_Store
 Thumbs.db

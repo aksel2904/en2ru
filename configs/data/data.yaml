@@ -30,5 +30,5 @@ test_tgt: data/data1/split_small/test.ru
 sp_model_src: data/data1/split_small/bpe_en.model
 sp_model_tgt: data/data1/split_small/bpe_ru.model
 
-batch_size: 32
+batch_size: 64
 num_workers: 0
