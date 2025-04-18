@@ -34,3 +34,15 @@ clean:
 	@echo "Удаляем временные файлы..."
 	rm -rf outputs/predictions.txt weights/ .dvc/tmp
 
+
+lint:
+	ruff check .
+
+format:
+	ruff format . && black .
+
+typecheck:
+	mypy .
+
+check: lint typecheck
+

@@ -43,6 +43,8 @@ import torch.nn.functional as F
 
         return F.softmax(attention, dim=1)
 '''
+
+
 class Attention(nn.Module):
     """
     Additive (Bahdanau-style) Attention mechanism.
@@ -52,6 +54,7 @@ class Attention(nn.Module):
         dec_hid_dim (int): Hidden size of decoder
         attn_dim (int): Dimension of attention intermediate layer
     """
+
     def __init__(self, enc_hid_dim, dec_hid_dim, attn_dim):
         super().__init__()
         self.enc_hid_dim = enc_hid_dim
@@ -78,8 +81,10 @@ class Attention(nn.Module):
         encoder_outputs = encoder_outputs.permute(1, 0, 2)
 
         # concat decoder hidden and encoder outputs
-        concat = torch.cat((decoder_hidden, encoder_outputs), dim=2)  # [batch_size, src_len, attn_in]
-        energy = torch.tanh(self.attn(concat))                        # [batch_size, src_len, attn_dim]
-        attention = self.v(energy).squeeze(2)                        # [batch_size, src_len]
+        concat = torch.cat(
+            (decoder_hidden, encoder_outputs), dim=2
+        )  # [batch_size, src_len, attn_in]
+        energy = torch.tanh(self.attn(concat))  # [batch_size, src_len, attn_dim]
+        attention = self.v(energy).squeeze(2)  # [batch_size, src_len]
 
-        return F.softmax(attention, dim=1)                           # normalized weights
+        return F.softmax(attention, dim=1)  # normalized weights

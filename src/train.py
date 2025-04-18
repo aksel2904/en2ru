@@ -29,7 +29,7 @@ def main(cfg: DictConfig):
         sp_model_src=cfg.data.sp_model_src,
         sp_model_tgt=cfg.data.sp_model_tgt,
         batch_size=cfg.data.batch_size,
-        num_workers=cfg.data.num_workers
+        num_workers=cfg.data.num_workers,
     )
     data.setup()
 
@@ -42,13 +42,13 @@ def main(cfg: DictConfig):
         input_dim=input_dim,
         emb_dim=cfg.model.enc_emb_dim,
         enc_hid_dim=cfg.model.enc_hid_dim,
-        dec_hid_dim=cfg.model.dec_hid_dim
+        dec_hid_dim=cfg.model.dec_hid_dim,
     )
 
     attn = Attention(
         enc_hid_dim=cfg.model.enc_hid_dim,
         dec_hid_dim=cfg.model.dec_hid_dim,
-        attn_dim=cfg.model.attn_dim
+        attn_dim=cfg.model.attn_dim,
     )
 
     dec = Decoder(
@@ -56,14 +56,14 @@ def main(cfg: DictConfig):
         emb_dim=cfg.model.dec_emb_dim,
         enc_hid_dim=cfg.model.enc_hid_dim,
         dec_hid_dim=cfg.model.dec_hid_dim,
-        attention=attn
+        attention=attn,
     )
 
     model = Seq2SeqLightningModule(
         encoder=enc,
         decoder=dec,
         sp_tgt=data.sp_tgt,
-        learning_rate=cfg.model.learning_rate
+        learning_rate=cfg.model.learning_rate,
     )
 
     checkpoint_callback = ModelCheckpoint(
@@ -72,7 +72,7 @@ def main(cfg: DictConfig):
         save_top_k=1,
         monitor="val_loss",
         mode="min",
-        save_weights_only=True
+        save_weights_only=True,
     )
 
     trainer = pl.Trainer(
@@ -80,7 +80,7 @@ def main(cfg: DictConfig):
         accelerator="gpu" if torch.cuda.is_available() else "cpu",
         default_root_dir="weights/",
         callbacks=[checkpoint_callback],  # вот здесь
-        log_every_n_steps=20
+        log_every_n_steps=20,
     )
 
     trainer.fit(model, datamodule=data)

@@ -13,7 +13,7 @@ class Seq2SeqLightningModule(pl.LightningModule):
         self.pad_id = sp_tgt.pad_id()
 
         self.criterion = nn.CrossEntropyLoss(ignore_index=self.pad_id)
-        
+
         self.model.apply(self.init_weights)
 
     def init_weights(self, m):

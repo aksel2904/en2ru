@@ -13,11 +13,12 @@ class Seq2Seq(nn.Module):
         decoder (Decoder): модуль декодера
         device (torch.device): устройство (cuda или cpu)
     """
+
     def __init__(self, encoder, decoder, device):
         super().__init__()
         self.encoder = encoder
         self.decoder = decoder
-        self.device = "cuda" # temporary. was: = device
+        self.device = "cuda"  # temporary. was: = device
 
     def forward(self, src, trg, teacher_forcing_ratio=1.0):
         """
@@ -85,8 +86,9 @@ class Seq2Seq(nn.Module):
         predictions = torch.stack(predictions, dim=1)  # [batch, seq_len]
         return predictions
 
-
-    def inference_beam_search(self, src, bos_id, eos_id, pad_id, beam_width=5, max_len=None):
+    def inference_beam_search(
+        self, src, bos_id, eos_id, pad_id, beam_width=5, max_len=None
+    ):
         """
         Beam search decoding.
 
@@ -106,12 +108,17 @@ class Seq2Seq(nn.Module):
 
         encoder_outputs, hidden = self.encoder(src)
 
-        beams = [[{
-            'tokens': [bos_id],
-            'score': 0.0,
-            'hidden': hidden[:, i:i+1].clone(),
-            'finished': False
-        }] for i in range(batch_size)]
+        beams = [
+            [
+                {
+                    "tokens": [bos_id],
+                    "score": 0.0,
+                    "hidden": hidden[:, i : i + 1].clone(),
+                    "finished": False,
+                }
+            ]
+            for i in range(batch_size)
+        ]
 
         for step in range(max_len):
             all_candidates = [[] for _ in range(batch_size)]
@@ -120,17 +127,17 @@ class Seq2Seq(nn.Module):
                 current_beams = beams[batch_idx]
 
                 for beam in current_beams:
-                    if beam['finished']:
+                    if beam["finished"]:
                         all_candidates[batch_idx].append(beam)
                         continue
 
-                    last_token = torch.tensor([beam['tokens'][-1]], device=self.device)
-                    current_hidden = beam['hidden']
+                    last_token = torch.tensor([beam["tokens"][-1]], device=self.device)
+                    current_hidden = beam["hidden"]
 
                     output, new_hidden = self.decoder(
                         last_token,
                         current_hidden.squeeze(0),
-                        encoder_outputs[:, batch_idx:batch_idx+1, :]
+                        encoder_outputs[:, batch_idx : batch_idx + 1, :],
                     )
 
                     log_probs = F.log_softmax(output, dim=1)
@@ -138,22 +145,24 @@ class Seq2Seq(nn.Module):
 
                     for score, token_id in zip(topk_scores[0], topk_ids[0]):
                         new_beam = {
-                            'tokens': beam['tokens'] + [token_id.item()],
-                            'score': beam['score'] + score.item(),
-                            'hidden': new_hidden.clone(),
-                            'finished': (token_id.item() == eos_id)
+                            "tokens": beam["tokens"] + [token_id.item()],
+                            "score": beam["score"] + score.item(),
+                            "hidden": new_hidden.clone(),
+                            "finished": (token_id.item() == eos_id),
                         }
                         all_candidates[batch_idx].append(new_beam)
 
             new_beams = []
             for batch_idx in range(batch_size):
                 candidates = all_candidates[batch_idx]
-                candidates.sort(key=lambda x: x['score'] / (len(x['tokens'])**0.7), reverse=True)
+                candidates.sort(
+                    key=lambda x: x["score"] / (len(x["tokens"]) ** 0.7), reverse=True
+                )
                 new_beams.append(candidates[:beam_width])
 
             beams = new_beams
 
-            if all(all(b['finished'] for b in beam_group) for beam_group in beams):
+            if all(all(b["finished"] for b in beam_group) for beam_group in beams):
                 break
 
         final_outputs = []
@@ -161,7 +170,9 @@ class Seq2Seq(nn.Module):
             if not beam_group:
                 final_outputs.append(torch.tensor([eos_id], device=self.device))
                 continue
-            best = max(beam_group, key=lambda x: x['score'] / (len(x['tokens'])**0.7))
-            final_outputs.append(torch.tensor(best['tokens'][1:], device=self.device))  # remove <bos>
+            best = max(beam_group, key=lambda x: x["score"] / (len(x["tokens"]) ** 0.7))
+            final_outputs.append(
+                torch.tensor(best["tokens"][1:], device=self.device)
+            )  # remove <bos>
 
         return pad_sequence(final_outputs, batch_first=True, padding_value=pad_id)
